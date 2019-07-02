@@ -6,9 +6,10 @@ import BaseLayout from '../components/layouts/BaseLayout';
 class Index extends Component {
 
   render() {
+    const { isAuthenticated, user } = this.props.auth;
     const roles =['Developer','Tech Lover','Team Player','Javascript','Node.js','React.js']
     return (
-      <BaseLayout className="cover">
+      <BaseLayout className="cover" {...this.props.auth} header="index">
         <div className="main-section">
           <div className="background-image">
             <img src="/static/images/background-index.png" />
@@ -40,7 +41,8 @@ class Index extends Component {
               <Col md="6" className="hero-welcome-wrapper">
                 <div className="hero-welcome-text">
                   <h1>
-                    Welcome to the portfolio website of Ramón Romero. Get
+                    {isAuthenticated && <span><b>{user.name ? user.name : 'User' } {' '} </b></span>}
+                     Welcome to the portfolio website of Ramón Romero. Get
                     informed, collaborate and discover projects I was working on
                     through the years!
                   </h1>

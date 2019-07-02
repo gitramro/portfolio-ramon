@@ -8,6 +8,7 @@ import {
   Nav,
   NavItem
 } from 'reactstrap';
+import auth0 from '../../services/auth0';
 
 export default class Example extends React.Component {
   state = {
@@ -20,9 +21,10 @@ export default class Example extends React.Component {
     });
   };
   render() {
+    const { isAuthenticated, user, className } = this.props;
     return (
       <div>
-        <Navbar className="port-navbar port-default absolute" color="transparent" dark expand="md">
+        <Navbar className={`port-navbar port-nav-base absolute ${className}`} color="transparent" dark expand="md">
           <NavbarBrand className="port-navbar-brand" href="/">Ramón Romero</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -42,6 +44,16 @@ export default class Example extends React.Component {
               <NavItem className="port-navbar-item">
               <BsNavLink route="/cv" title="Cv" />
               </NavItem>
+              { !isAuthenticated &&
+                <NavItem className="port-navbar-item">
+              <Login />
+                </NavItem>
+              }
+              { isAuthenticated &&
+                <NavItem className="port-navbar-item">
+              <Logout />
+                </NavItem>
+              }
             </Nav>
           </Collapse>
         </Navbar>
@@ -56,3 +68,6 @@ const BsNavLink = ({route,title}) => (
     <a className="nav-link port-navbar-link">{title}</a>
   </Link>
 );
+
+const Login = () => <span onClick={auth0.login} className="nav-link port-navbar-link clickable">Login</span>
+const Logout = () => <span onClick={auth0.logout} className="nav-link port-navbar-link clickable">Logout</span>

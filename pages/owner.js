@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import BaseLayout from '../components/layouts/BaseLayout';
 import BasePage from '../components/BasePage';
 
-class Cv  extends Component {
+import withAuth from '../components/hoc/withAuth';
+
+class Owner  extends Component {
   render() {
     return (
       <BaseLayout  {...this.props.auth}>
       <BasePage>
-        I am Cv Page
+        I am Owner Page
         </BasePage>
       </BaseLayout>
     )
   }
 }
 
-export default  Cv
+
+export default  withAuth('siteOwner')(Owner)

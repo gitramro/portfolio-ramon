@@ -24,7 +24,7 @@ class Portfolio extends Component {
   render() {
     const { router,post } = this.props;
     return (
-      <BaseLayout>
+      <BaseLayout {...this.props.auth}>
       <BasePage>
         I am Portfolio Page
         <h2>{router.query.id}</h2>
