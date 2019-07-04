@@ -1,10 +1,17 @@
 const express = require('express');
 const next = require('next');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const routes = require('../routes');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = routes.getRequestHandler(app);
+const config = require('./config');
+
+const bookRoutes = require('./routes/book');
+const portfolioRoutes = require('./routes/portfolio');
+
 
 const authService = require('./services/auth');
 
@@ -19,10 +26,21 @@ const secretData = [
   }
 ];
 
+mongoose.connect(config.DB_URI, { useNewUrlParser: true }).then(() => {
+  console.log('Mongoose Connected!')
+}).catch((e) => {
+  console.log(e);
+})
+
 app
   .prepare()
   .then(() => {
     const server = express();
+    server.use(bodyParser.json());
+
+    server.use('/api/v1/books', bookRoutes);
+    server.use('/api/v1/portfolios', portfolioRoutes);
+    
 
     server.get('/api/v1/secret', authService.checkJWT, (req, res) => {
       return res.json(secretData);
@@ -34,6 +52,8 @@ app
     server.get('*', (req, res) => {
       return handle(req, res);
     });
+
+
 
     server.use(function(err, req, res, next) {
       if (err.name === 'UnauthorizedError') {
