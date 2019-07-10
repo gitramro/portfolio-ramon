@@ -4,22 +4,30 @@ import BasePage from '../components/BasePage';
 import PortfolioCreateForm from '../components/portfolios/PortfolioCreateForm';
 import { Row, Col } from 'reactstrap';
 
-import {createPortfolio} from '../actions'
+import {getPortfolioById,updatePortfolio} from '../actions'
 import withAuth from '../components/hoc/withAuth';
 import { Router } from '../routes';
-import moment from 'moment';
-const INITIAL_VALUES = {title:'',company:'', location:'', position:'',description:'', startDate:moment(), endDate:moment() }
 
-class PortfolioNew extends Component {
+class PortfolioEdit extends Component {
+
+  static async getInitialProps({ query }) {
+    let portfolio = {}
+    try {
+      portfolio = await getPortfolioById(query.id);
+      return {portfolio}
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   state = {
     error:undefined
   }
 
-  savePortfolio = async (portfolioData, { setSubmitting }) => {
+  updatePortfolio = async (portfolioData, { setSubmitting }) => {
     setSubmitting(true);
     try {
-      await createPortfolio(portfolioData);
+      await updatePortfolio(portfolioData);
       setSubmitting(false);
       this.setState({ error: undefined });
       Router.pushRoute('/portfolios');
@@ -28,18 +36,18 @@ class PortfolioNew extends Component {
       setSubmitting(false);
       this.setState({error})
     }
-    
   }
 
 
   render() {
     const { error } = this.state;
+    const { portfolio } = this.props.pageProps; //WHY IS COMING FROM PAGEPROPS?
     return (
       <BaseLayout {...this.props.auth}>
-        <BasePage className="portfolio-create-page" title="Create New Portfolio">
+        <BasePage className="portfolio-create-page" title="Update Portfolio">
           <Row>
             <Col md="6">
-              <PortfolioCreateForm initialValues={INITIAL_VALUES} error={error} onSubmit={this.savePortfolio} />
+              <PortfolioCreateForm initialValues={portfolio} error={error} onSubmit={this.updatePortfolio} />
             </Col>
           </Row>  
          </BasePage>   
@@ -48,4 +56,4 @@ class PortfolioNew extends Component {
   }
 }
 
-export default withAuth('siteOwner')(PortfolioNew);
+export default withAuth('siteOwner')(PortfolioEdit);

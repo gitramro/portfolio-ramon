@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container } from 'reactstrap';
 
-const BasePage =({children,className,title})=>{
+const BasePage =({children,className,title, containerClass})=>{
   return (
     <div className={`base-page ${className}`}>
-      <Container>
+      <Container className={containerClass}>
       {title && <div className="page-header"><h1 className="page-header-title">{title}</h1></div>}
         {children}
         </Container>
@@ -13,7 +13,8 @@ const BasePage =({children,className,title})=>{
 }
 
 BasePage.defaultProps = {
-  className:''
+  className: '',
+  containerClass:''
 }
 
 
