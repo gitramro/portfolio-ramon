@@ -44,7 +44,7 @@ class Index extends Component {
       >
         <div className="main-section">
           <div className="background-image">
-            <img src="/static/images/background-index.png" />
+            <img  src="/static/images/background-index.png" />
           </div>
 
           <Container>
@@ -62,6 +62,7 @@ class Index extends Component {
                       <img
                         className="image"
                         src="/static/images/section-1.png"
+                        alt="guy programming welcome blue"
                       />
                       <div className="shadow-custom">
                         <div className="shadow-inner"> </div>
@@ -78,6 +79,7 @@ class Index extends Component {
                       <img
                         className="image"
                         src="/static/images/section-2.png"
+                        alt="guy programming welcome orange"
                       />
                       <div className="shadow-custom shadow-custom-2">
                         <div className="shadow-inner"> </div>
@@ -112,7 +114,7 @@ class Index extends Component {
                   />
                 </div>
                 <div className="hero-welcome-bio">
-                  <h1>Let's take a look on my work.</h1>
+                  <h2>Let's take a look on my work.</h2>
                 </div>
               </Col>
             </Row>
