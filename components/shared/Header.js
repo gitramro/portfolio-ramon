@@ -1,12 +1,16 @@
 import React from 'react';
-import Link from 'next/link';
+import ActiveLink from '../ActiveLink';
 import {
   Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem
+  NavItem,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 import auth0 from '../../services/auth0';
 
@@ -17,15 +21,73 @@ export default class Example extends React.Component {
 
   toggle = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
+      dropdownOpen: false
     });
   };
+
+
+  toggleDropdown=()=> {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  renderBlogMenu=()=> {
+    const { isSiteOwner } = this.props;
+
+    if (isSiteOwner) {
+      return (
+        <Dropdown className="port-navbar-link port-dropdown-menu" nav isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
+          <DropdownToggle className="port-dropdown-toggle" nav caret>
+            Blog
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>
+              <BsNavLink className="port-dropdown-item"
+                         route="/blog"
+                         title="Blogs" />
+            </DropdownItem>
+            <DropdownItem>
+              <BsNavLink className="port-dropdown-item"
+                         route="/blogs/new"
+                         title="Create a Blog" />
+            </DropdownItem>
+            <DropdownItem>
+              <BsNavLink className="port-dropdown-item"
+                         route="/blogs/dashboard"
+                         title="Blogs Dashboard" />
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      )
+    }
+
+    return (
+      <NavItem className="port-navbar-item">
+        <BsNavLink route="/blog" title="Blog" />
+      </NavItem>
+    )
+  }
+
   render() {
     const { isAuthenticated, user, className } = this.props;
+    const { isOpen } = this.state;
+
+
+    const menuOpenClass = isOpen ? 'menu-open' : 'menu-close';
+
     return (
       <div>
-        <Navbar className={`port-navbar port-nav-base absolute ${className}`} color="transparent" dark expand="md">
-          <NavbarBrand className="port-navbar-brand" href="/">Ramón Romero</NavbarBrand>
+        <Navbar
+          className={`port-navbar port-nav-base absolute ${className} ${menuOpenClass}`}
+          color="transparent"
+          dark
+          expand="md"
+        >
+          <NavbarBrand className="port-navbar-brand" href="/">
+            Ramón Romero
+          </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -33,27 +95,25 @@ export default class Example extends React.Component {
                 <BsNavLink route="/" title="Home" />
               </NavItem>
               <NavItem className="port-navbar-item">
-              <BsNavLink route="/about" title="About" />
+                <BsNavLink route="/about" title="About" />
               </NavItem>
               <NavItem className="port-navbar-item">
-              <BsNavLink route="/portfolios" title="Portfolio" />
+                <BsNavLink route="/portfolios" title="Portfolio" />
               </NavItem>
+              {this.renderBlogMenu()}
               <NavItem className="port-navbar-item">
-              <BsNavLink route="/blog" title="Blog" />
+                <BsNavLink route="/cv" title="Cv" />
               </NavItem>
-              <NavItem className="port-navbar-item">
-              <BsNavLink route="/cv" title="Cv" />
-              </NavItem>
-              { !isAuthenticated &&
+              {!isAuthenticated && (
                 <NavItem className="port-navbar-item">
-              <Login />
+                  <Login />
                 </NavItem>
-              }
-              { isAuthenticated &&
+              )}
+              {isAuthenticated && (
                 <NavItem className="port-navbar-item">
-              <Logout />
+                  <Logout />
                 </NavItem>
-              }
+              )}
             </Nav>
           </Collapse>
         </Navbar>
@@ -62,12 +122,24 @@ export default class Example extends React.Component {
   }
 }
 
+const BsNavLink = (props) => {
+  const { route, title } = props;
+  const className = props.className || "";
 
-const BsNavLink = ({route,title}) => (
-  <Link href={route}>
-    <a className="nav-link port-navbar-link">{title}</a>
-  </Link>
+  return (
+    <ActiveLink activeClassName="active" route={route}>
+      <a className={`nav-link port-navbar-link ${className}`}> {title} </a>
+    </ActiveLink>
+  )
+}
+
+const Login = () => (
+  <span onClick={auth0.login} className="nav-link port-navbar-link clickable">
+    Login
+  </span>
 );
-
-const Login = () => <span onClick={auth0.login} className="nav-link port-navbar-link clickable">Login</span>
-const Logout = () => <span onClick={auth0.logout} className="nav-link port-navbar-link clickable">Logout</span>
+const Logout = () => (
+  <span onClick={auth0.logout} className="nav-link port-navbar-link clickable">
+    Logout
+  </span>
+);
