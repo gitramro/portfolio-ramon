@@ -2,7 +2,9 @@ import auth0 from 'auth0-js';
 import Cookies from 'js-cookie';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import {getCookieFromReq} from '../helpers/utils';
+import { getCookieFromReq } from '../helpers/utils';
+
+const CLIENT_ID = process.env.CLIENT_ID;
 
  class Auth0{
   
@@ -10,8 +12,8 @@ import {getCookieFromReq} from '../helpers/utils';
   constructor() {
     this.auth = new auth0.WebAuth({
       domain: 'dev-418gq887.auth0.com',
-      clientID: 'X3LOQwMRBKmA3YwSxmJjo5EkPQZa3JCa',
-      redirectUri: 'http://localhost:3000/callback',
+      clientID: CLIENT_ID,
+      redirectUri: `${process.env.BASE_URL}/callback`,
       responseType: 'token id_token',
       scope: 'openId profile'
     });
@@ -57,7 +59,7 @@ setSession(authResult) {
      Cookies.remove('expiresAt');
      this.auth.logout({
        returnTo: '',
-       clientID:'X3LOQwMRBKmA3YwSxmJjo5EkPQZa3JCa'
+       clientID:CLIENT_ID
      })
    }
 
