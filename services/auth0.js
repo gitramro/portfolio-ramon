@@ -58,7 +58,7 @@ setSession(authResult) {
     Cookies.remove('jwt');
      Cookies.remove('expiresAt');
      this.auth.logout({
-       returnTo: '',
+       returnTo: process.env.BASE_URL,
        clientID:CLIENT_ID
      })
    }
