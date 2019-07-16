@@ -61,7 +61,7 @@ class Index extends Component {
                       </div>
                       <img
                         className="image"
-                        src="/static/images/section-1.png"
+                        src="/static/images/section-1.jpg"
                         alt="guy programming welcome blue"
                       />
                       <div className="shadow-custom">
@@ -78,7 +78,7 @@ class Index extends Component {
                       </div>
                       <img
                         className="image"
-                        src="/static/images/section-2.png"
+                        src="/static/images/section-2.jpg"
                         alt="guy programming welcome orange"
                       />
                       <div className="shadow-custom shadow-custom-2">

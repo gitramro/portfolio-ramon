@@ -18,8 +18,7 @@ const BaseLayout = (props) => {
         <meta property="og:description" content="My name is Ramón Romero and I am a Web Developer." />
         {cannonical && <link rel="cannonical" href={`${process.env.BASE_URL}${cannonical}`} />}
         <link rel="icon" type="image/ico" href="/static/favicon.ico"/>
-        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+       
         <script src="https://kit.fontawesome.com/82d7fe9220.js"></script>
        </Head> 
     <div className="layout-container">
